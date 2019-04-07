@@ -141,8 +141,8 @@ class PlanCalculator:
     def calculate(self):
         copyPlan = self.plan
         copyComponents = self.components
-        self.calculateWithPermutation(0, -1, copyPlan, copyComponents)
-        # self.bestArrangement = self.calculateGreedy(self.plan,self.components)
+        # self.calculateWithPermutation(0, -1, copyPlan, copyComponents)
+        self.bestArrangement = self.calculateGreedy(self.plan,self.components)
 
     def calculateWithPermutation(self, leftBound, minMaxTime, copyPlan, copyComponents):
         if leftBound == len(copyPlan)-1:
