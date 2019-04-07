@@ -94,6 +94,11 @@ class PlanCalculator:
 
     def getBestArrangement(self):
         return self.bestArrangement
+    def getMaxTime(self):
+        maxTime = 1
+        for machineName, machineArrangements in self.bestArrangement.items():
+            maxTime = max(maxTime, machineArrangements[len(machineArrangements)-1][timeKey][1])
+        return maxTime
     def calculateGreedy(self):
         # queue item : {"machineName":string, "componentName":string}
         # TODO: the limitation is that it use queue, so first component has higher priority. Improve this
@@ -349,21 +354,21 @@ def printArrangement(constraints, bestPlan, withPlot):
     calculator = PlanCalculator(constraints, bestPlan)
     calculator.calculate()
     greedyArrangement = calculator.getBestArrangement()
-    maxTime = 1
+    maxTime = calculator.getMaxTime()
     for index, component in enumerate(constraints[componentsKey]):
         print("Cycle time for component {}: {}".format(component.getName(), str(calculator.getCycleTime(index)) ))
-        maxTime = max(maxTime, calculator.getCycleTime(index))
     components = {}
+    scale = 10.0
     for machineName, machinePlans in greedyArrangement.items():
         print("Machine " + machineName)
         machineNumber = int(machineName[1:])
         for p in machinePlans:
             if p[componentNameKey] not in components:
-                components[p[componentNameKey]] = [None] * 10 * math.ceil(maxTime)
+                components[p[componentNameKey]] = [None] * int(scale) * math.ceil(maxTime)
             print("  Component : {}".format(p[componentNameKey]))
             print("      time = [{} {}]".format(str(p[timeKey][0]), str(p[timeKey][1])))
-            for i in np.arange(p[timeKey][0],p[timeKey][1],0.1):
-                components[p[componentNameKey]][int(i*10)] = machineNumber
+            for i in np.arange(p[timeKey][0],p[timeKey][1],1/scale):
+                components[p[componentNameKey]][int(i*scale)] = machineNumber
     if withPlot:
         plt.figure()
         labels = []
@@ -371,7 +376,7 @@ def printArrangement(constraints, bestPlan, withPlot):
             labels.append(key)
             plt.plot(arrayVals)
         plt.ylabel('Machine')
-        plt.xlabel('Time')
+        plt.xlabel('Time (scale : {}x)'.format(scale))
         plt.legend(labels, loc='upper left')
         plt.show()
 
@@ -393,6 +398,6 @@ constraintsModel = {
 c1 = 0.6
 c2 = 0.4
 
-bestPlan = geneticAlgorithm(constraints=constraintsModel, popSize=100, eliteSize=20, mutationRate=0.1, generations=15, withPlot=True)
+bestPlan = geneticAlgorithm(constraints=constraintsModel, popSize=100, eliteSize=20, mutationRate=0.1, generations=150, withPlot=True)
 
 printArrangement(constraintsModel, bestPlan, True)
