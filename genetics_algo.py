@@ -29,7 +29,6 @@ class PlanCalculator:
         self.components = constraints[componentsKey]
         self.plan = plan
         # {'M1':[{componentNameKey: 'C1', timeKey: [0,3]}]}
-        self.greedyArrangement = {}
         self.bestArrangement = {}
         # [{setKey:set(), cycleTime: int}]
         self.cycleTimeComponentSet = []
@@ -74,13 +73,13 @@ class PlanCalculator:
                 for newName in newQueueSet:
                     machineUsedNames.add(newName)
                 queueSet = newQueueSet
-
         maxTime = 1
         for machineName in machineUsedNames:
             machineSchedule = self.bestArrangement[machineName]
             machineCycleTime = machineSchedule[len(machineSchedule)-1][timeKey][1] - machineSchedule[0][timeKey][0]
             maxTime = max(machineCycleTime, maxTime)
         return maxTime, machineUsedNames
+
     def addCycleTimeSet(self, setObj):
         self.cycleTimeComponentSet.append(setObj)
 
@@ -94,51 +93,73 @@ class PlanCalculator:
 
     def getBestArrangement(self):
         return self.bestArrangement
-    def getMaxTime(self):
+
+    def getMaxTime(self, arrangements):
         maxTime = 1
-        for machineName, machineArrangements in self.bestArrangement.items():
+        for machineName, machineArrangements in arrangements.items():
             maxTime = max(maxTime, machineArrangements[len(machineArrangements)-1][timeKey][1])
         return maxTime
-    def calculateGreedy(self):
+
+    def calculateGreedy(self, plan, components):
         # queue item : {"machineName":string, "componentName":string}
-        # TODO: the limitation is that it use queue, so first component has higher priority. Improve this
         queue = []
         i = 0
         # transform all component plan into queue
         while True:
             count = 0
-            for index, componentPlan in enumerate(self.plan):
+            for index, componentPlan in enumerate(plan):
                 if i >= len(componentPlan):
                     count +=1
                     continue
                 machineChosen = componentPlan[i]
-                queue.append({machineNameKey: machineChosen.getName(), componentNameKey: self.components[index].getName(),
-                              durationKey:self.components[index].getProcessTime(i)})
+                queue.append({machineNameKey: machineChosen.getName(), componentNameKey: components[index].getName(),
+                              durationKey:components[index].getProcessTime(i)})
             i += 1
             if count == len(self.plan):
                 break
         # assign machine task based on queue
         componentTaskTime = {}
+        greedyArrangement = {}
         for index, queueTask in enumerate(queue):
             queueTaskMachineName = queueTask[machineNameKey]
             queueTaskComponentName = queueTask[componentNameKey]
             duration = queueTask[durationKey]
-            if queueTaskMachineName not in self.greedyArrangement:
+            if queueTaskMachineName not in greedyArrangement:
                 startTime = 0
                 if queueTaskComponentName in componentTaskTime:
                     startTime = componentTaskTime[queueTaskComponentName]
-                self.greedyArrangement[queueTaskMachineName] =[{componentNameKey:queueTaskComponentName, timeKey:[startTime, startTime + duration]}]
+                greedyArrangement[queueTaskMachineName] =[{componentNameKey:queueTaskComponentName, timeKey:[startTime, startTime + duration]}]
                 componentTaskTime[queueTaskComponentName] = startTime + duration
             else:
-                startTime = self.greedyArrangement[queueTaskMachineName][len(self.greedyArrangement[queueTaskMachineName])-1][timeKey][1]
+                startTime = greedyArrangement[queueTaskMachineName][len(greedyArrangement[queueTaskMachineName])-1][timeKey][1]
                 if queueTaskComponentName in componentTaskTime:
                     startTime = max(componentTaskTime[queueTaskComponentName], startTime)
-                self.greedyArrangement[queueTaskMachineName].append({componentNameKey:queueTaskComponentName, timeKey:[startTime, startTime + duration]})
+                greedyArrangement[queueTaskMachineName].append({componentNameKey:queueTaskComponentName, timeKey:[startTime, startTime + duration]})
                 componentTaskTime[queueTaskComponentName] = startTime + duration
-    def calculate(self):
-        self.calculateGreedy()
-        self.bestArrangement = self.greedyArrangement
+        return greedyArrangement
 
+    def calculate(self):
+        copyPlan = self.plan
+        copyComponents = self.components
+        self.calculateWithPermutation(0, -1, copyPlan, copyComponents)
+        # self.bestArrangement = self.calculateGreedy(self.plan,self.components)
+
+    def calculateWithPermutation(self, leftBound, minMaxTime, copyPlan, copyComponents):
+        if leftBound == len(copyPlan)-1:
+            greedyArrangement = self.calculateGreedy(copyPlan, copyComponents)
+            calcMaxTime = self.getMaxTime(greedyArrangement)
+            if (minMaxTime == -1) | (calcMasxTime<minMaxTime):
+                self.bestArrangement = greedyArrangement
+                return calcMaxTime
+            else:
+                return minMaxTime
+        for i in range(leftBound,len(copyPlan)):
+            copyPlan[i], copyPlan[leftBound] = copyPlan[leftBound], copyPlan[i]
+            copyComponents[i], copyComponents[leftBound] = copyComponents[leftBound], copyComponents[i]
+            minMaxTime = self.calculateWithPermutation(leftBound+1, minMaxTime, copyPlan, copyComponents)
+            copyPlan[i], copyPlan[leftBound] = copyPlan[leftBound], copyPlan[i]
+            copyComponents[i], copyComponents[leftBound] = copyComponents[leftBound], copyComponents[i]
+        return minMaxTime
 
 class Machine:
     def __init__(self, name, cost, processNames):
@@ -354,7 +375,7 @@ def printArrangement(constraints, bestPlan, withPlot):
     calculator = PlanCalculator(constraints, bestPlan)
     calculator.calculate()
     greedyArrangement = calculator.getBestArrangement()
-    maxTime = calculator.getMaxTime()
+    maxTime = calculator.getMaxTime(greedyArrangement)
     for index, component in enumerate(constraints[componentsKey]):
         print("Cycle time for component {}: {}".format(component.getName(), str(calculator.getCycleTime(index)) ))
     components = {}
