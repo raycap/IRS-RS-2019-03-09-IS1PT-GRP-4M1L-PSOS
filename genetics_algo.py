@@ -182,7 +182,6 @@ class Component:
 
 def calculateProfit(constraints, plan):
     # calculate the profit and count type of product produced (min N to be counted as 1 otherwise its 0)
-    # TODO : Problem: based on the plan, how we can optimize the result ? (e.g. each product will have their own cycle time)
     calculator = PlanCalculator(constraints, plan)
     calculator.calculate()
     components = constraints[componentsKey]
