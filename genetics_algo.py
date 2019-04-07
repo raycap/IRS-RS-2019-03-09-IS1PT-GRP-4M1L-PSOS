@@ -3,6 +3,7 @@
 
 get_ipython().run_line_magic('matplotlib', 'inline')
 import numpy as np, random, operator, pandas as pd, matplotlib.pyplot as plt
+import math
 
 componentsKey = 'Components'
 machinesKey = 'Machines'
@@ -336,42 +337,62 @@ def geneticAlgorithm(constraints, popSize, eliteSize, mutationRate, generations,
         for machine in machines:
             print(machine.getName())
 
-    print("Machine arrangement: ")
-    printArrangement(constraints, bestPlan)
-
     if withPlot:
+        plt.figure()
         plt.plot(progress)
         plt.ylabel('Function')
         plt.xlabel('Generation')
         plt.show()
     return bestPlan
 
-def printArrangement(constraints, bestPlan):
+def printArrangement(constraints, bestPlan, withPlot):
     calculator = PlanCalculator(constraints, bestPlan)
     calculator.calculate()
     greedyArrangement = calculator.getBestArrangement()
+    maxTime = 1
     for index, component in enumerate(constraints[componentsKey]):
         print("Cycle time for component {}: {}".format(component.getName(), str(calculator.getCycleTime(index)) ))
+        maxTime = max(maxTime, calculator.getCycleTime(index))
+    components = {}
     for machineName, machinePlans in greedyArrangement.items():
         print("Machine " + machineName)
+        machineNumber = int(machineName[1:])
         for p in machinePlans:
+            if p[componentNameKey] not in components:
+                components[p[componentNameKey]] = [None] * 10 * math.ceil(maxTime)
             print("  Component : {}".format(p[componentNameKey]))
             print("      time = [{} {}]".format(str(p[timeKey][0]), str(p[timeKey][1])))
+            for i in np.arange(p[timeKey][0],p[timeKey][1],0.1):
+                components[p[componentNameKey]][int(i*10)] = machineNumber
+    if withPlot:
+        plt.figure()
+        labels = []
+        for key, arrayVals in components.items():
+            labels.append(key)
+            plt.plot(arrayVals)
+        plt.ylabel('Machine')
+        plt.xlabel('Time')
+        plt.legend(labels, loc='upper left')
+        plt.show()
 
 constraintsModel = {
-    machinesKey:[Machine(name='M1',cost=1,processNames=['P1','P2']),Machine(name='M2',cost=0.75,processNames=['P1']),Machine(name='M3',cost=3,processNames=['P1','P2','P3']),Machine(name='M4',cost=3,processNames=['P5'])],
+    machinesKey:[Machine(name='M1',cost=1.5,processNames=['P1','P2']),Machine(name='M2',cost=0.75,processNames=['P1']),Machine(name='M3',cost=3,processNames=['P1','P2','P3']),
+                 Machine(name='M4',cost=2,processNames=['P1','P3']),Machine(name='M5',cost=3,processNames=['P5']),Machine(name='M6',cost=1.5,processNames=['P2','P3'])],
     componentsKey:[
-        Component(name='C5', price=25.0, processes=[{processNameKey:'P1', processTimeKey:6.0},{processNameKey:'P2', processTimeKey:2.5},{processNameKey:'P3', processTimeKey:1}]),
+        Component(name='C5', price=25.0, processes=[{processNameKey:'P1', processTimeKey:4.0},{processNameKey:'P2', processTimeKey:2.5},{processNameKey:'P3', processTimeKey:1}]),
         Component(name='C6', price=20.0, processes=[{processNameKey:'P1', processTimeKey:2.0},{processNameKey:'P2', processTimeKey:2},{processNameKey:'P3', processTimeKey:2}]),
         Component(name='C1', price=10.0, processes=[{processNameKey:'P1', processTimeKey:3}]),
         Component(name='C2', price=12.0, processes=[{processNameKey:'P1', processTimeKey:2},{processNameKey:'P2', processTimeKey:3}]),
         Component(name='C3', price=8.0, processes=[{processNameKey:'P2', processTimeKey:3}]),
         Component(name='C4', price=14.0, processes=[{processNameKey:'P2', processTimeKey:3.5},{processNameKey:'P3', processTimeKey:2}]),
-        Component(name='C7', price=5.0, processes=[{processNameKey:'P5', processTimeKey:2.0}])
-                   ]
+        Component(name='C8', price=14.0, processes=[{processNameKey:'P3', processTimeKey:3.5},{processNameKey:'P2', processTimeKey:2}]),
+        Component(name='C7', price=15.0, processes=[{processNameKey:'P5', processTimeKey:2.0}])
+    ]
 }
 # score balancer between profitability and product coverage
 c1 = 0.6
 c2 = 0.4
 
-bestRoute = geneticAlgorithm(constraints=constraintsModel, popSize=100, eliteSize=20, mutationRate=0.1, generations=15, withPlot=True)
+bestPlan = geneticAlgorithm(constraints=constraintsModel, popSize=100, eliteSize=20, mutationRate=0.1, generations=15, withPlot=True)
+
+printArrangement(constraintsModel, bestPlan, True)
