@@ -2,6 +2,7 @@ package ga
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 	"sort"
 	"sync"
@@ -12,6 +13,8 @@ type geneticsAlgoImpl struct {
 	populationSize, eliteSize, generations int64
 	mutationRate                           float64
 	chromModel                             ChromosomeModeller
+	useConcurrency                         bool
+	scoreProgress                          []float64
 }
 
 type scoreWrapper struct {
@@ -19,24 +22,61 @@ type scoreWrapper struct {
 	chromosome   Chromosome
 }
 
-func New(popSize, eliteSize, generations int64, mutationRate float64, chromModel ChromosomeModeller) GeneticsAlgo {
+func New(popSize, eliteSize, generations int64, mutationRate float64, chromModel ChromosomeModeller, useCon bool) GeneticsAlgo {
 	return &geneticsAlgoImpl{
 		populationSize: popSize,
 		eliteSize:      eliteSize,
 		generations:    generations,
 		mutationRate:   mutationRate,
 		chromModel:     chromModel,
+		useConcurrency: useCon,
+		scoreProgress:  []float64{},
 	}
 }
 
 func (ga *geneticsAlgoImpl) Solve() Chromosome {
 	rand.Seed(time.Now().UnixNano())
-	populations := ga.initPopulation()
+	var (
+		stuck             bool
+		populations       []Chromosome
+		rankedPopulations []scoreWrapper
+	)
+	if ga.useConcurrency {
+		populations = ga.initPopulationWithAsync()
+	} else {
+		populations = ga.initPopulation()
+	}
 	for i := int64(0); i <= ga.generations; i++ {
-		populations = ga.createNextGen(populations)
+		populations, stuck = ga.createNextGen(populations)
+		if stuck {
+			break
+		}
+	}
+	if ga.useConcurrency {
+		rankedPopulations = ga.rankByConcurreny(populations)
+	} else {
+		rankedPopulations = ga.rank(populations)
 	}
 
-	return ga.rank(populations)[0].chromosome
+	return rankedPopulations[0].chromosome
+}
+
+func (ga *geneticsAlgoImpl) initPopulationWithAsync() []Chromosome {
+	mutex := sync.Mutex{}
+	wg := sync.WaitGroup{}
+	populations := make([]Chromosome, ga.populationSize)
+	for i := int64(0); i < ga.populationSize; i++ {
+		wg.Add(1)
+		go func(i int64) {
+			defer wg.Done()
+			mutex.Lock()
+			populations[i] = ga.chromModel.GenerateRandom()
+			mutex.Unlock()
+		}(i)
+	}
+	wg.Wait()
+
+	return populations
 }
 
 func (ga *geneticsAlgoImpl) initPopulation() []Chromosome {
@@ -47,12 +87,44 @@ func (ga *geneticsAlgoImpl) initPopulation() []Chromosome {
 	return populations
 }
 
-func (ga *geneticsAlgoImpl) createNextGen(populations []Chromosome) []Chromosome {
-	rankedPopulation := ga.rankByConcurreny(populations)
+func (ga *geneticsAlgoImpl) createNextGen(populations []Chromosome) ([]Chromosome, bool) {
+	var rankedPopulation []scoreWrapper
+	if ga.useConcurrency {
+		rankedPopulation = ga.rankByConcurreny(populations)
+	} else {
+		rankedPopulation = ga.rank(populations)
+	}
+	ga.recordProgress(rankedPopulation[0].fitnessScore)
+	if ga.progressStuck() {
+		return populations, true
+	}
 	matingPool := ga.generateMatingPool(rankedPopulation)
 	children := ga.breedPopulation(matingPool)
 	mutatedChildren := ga.mutate(children)
-	return mutatedChildren
+	return mutatedChildren, false
+}
+
+func (ga *geneticsAlgoImpl) progressStuck() bool {
+	if len(ga.scoreProgress) <= 2 {
+		return false
+	}
+
+	count := 0
+	for i := len(ga.scoreProgress) - 1; i >= 1; i-- {
+		p1, p2 := ga.scoreProgress[i], ga.scoreProgress[i-1]
+		if (100.0 * math.Abs(p1-p2) / p2) > 2 {
+			return false
+		}
+		if count >= 10 {
+			return true
+		}
+		count++
+	}
+	return false
+}
+
+func (ga *geneticsAlgoImpl) recordProgress(score float64) {
+	ga.scoreProgress = append(ga.scoreProgress, score)
 }
 
 func (ga *geneticsAlgoImpl) rankByConcurreny(populations []Chromosome) []scoreWrapper {
@@ -79,7 +151,6 @@ func (ga *geneticsAlgoImpl) rankByConcurreny(populations []Chromosome) []scoreWr
 	return scores
 }
 
-
 func (ga *geneticsAlgoImpl) rank(populations []Chromosome) []scoreWrapper {
 	scores := make([]scoreWrapper, ga.populationSize)
 	for i := int64(0); i < ga.populationSize; i++ {
@@ -95,28 +166,27 @@ func (ga *geneticsAlgoImpl) rank(populations []Chromosome) []scoreWrapper {
 	return scores
 }
 
-
 func (ga *geneticsAlgoImpl) generateMatingPool(rankedPopulation []scoreWrapper) []Chromosome {
 	matingPool := make([]Chromosome, ga.populationSize)
 	cumSum := make([]float64, ga.populationSize)
 	cumSum[0] = rankedPopulation[0].fitnessScore
-	for i:= int64(1) ;i< ga.populationSize; i++{
+	for i := int64(1); i < ga.populationSize; i++ {
 		cumSum[i] = cumSum[i-1] + rankedPopulation[i].fitnessScore
 	}
 
 	totalSum := cumSum[len(cumSum)-1]
-	for i:= int64(0) ;i< ga.populationSize; i++{
+	for i := int64(0); i < ga.populationSize; i++ {
 		cumSum[i] = cumSum[i] / totalSum
 	}
 
-	for i := int64(0) ;i< ga.populationSize ; i++ {
+	for i := int64(0); i < ga.populationSize; i++ {
 		if i < ga.eliteSize {
 			matingPool[i] = rankedPopulation[i].chromosome
-		} else{
+		} else {
 			pick := rand.Float64()
-			for j := 0 ; j< len(rankedPopulation) ;i++{
+			for j := 0; j < len(rankedPopulation); j++ {
 				if pick <= cumSum[j] {
-					matingPool[j] = rankedPopulation[j].chromosome
+					matingPool[i] = rankedPopulation[j].chromosome
 					break
 				}
 			}

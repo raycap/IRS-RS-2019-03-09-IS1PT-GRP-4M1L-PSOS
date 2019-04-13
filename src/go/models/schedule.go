@@ -1,11 +1,20 @@
 package models
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 type MachineSchedule struct {
-	ComponentName string
-	ProcessName string
-	StartTime, EndTime float64
+	ComponentName string `json:"componentName"`
+	ProcessName string `json:"processName"`
+	StartTime float64 `json:"startTime"`
+	EndTime float64 `json:"endTime"`
+}
+
+type scheduleUnit struct{
+	machineName, componentName, processName string
+	duration float64
 }
 
 type Schedule struct {
@@ -13,20 +22,144 @@ type Schedule struct {
 	machineSchedules map[string][]MachineSchedule
 }
 
-func (p *Schedule) GetCycleTime(componentIndex int64) float64 {
-	// TODO :
-	return 0.0
+func (s *Schedule) GetCycleTime(componentIndex int64) float64 {
+	return s.buildCycleTime(componentIndex)
 }
 
-func (p *Schedule) GetMaxCyleTime() float64 {
+func (s *Schedule) buildCycleTime(componentIndex int64) float64 {
+	componentNameToIndex := s.plan.ComponentNameToIndex()
+	componentName := s.plan.orderedComponents[componentIndex].Name
+	componentMap := map[string][]string{}
+	machineMap := map[string]bool{}
+	machineList := []string{}
+	// get init machines that are directly affected
+	if len(s.plan.machineAssignment[componentIndex]) == 0 {
+		return -1.0
+	}
+
+	for _, machine := range s.plan.machineAssignment[componentIndex]{
+		machineName := machine.Name
+		machineList = append(machineList, machineName)
+		machineMap[machineName] = true
+		if _, ok := componentMap[componentName]; !ok{
+			componentMap[componentName] = []string{machineName}
+		}else{
+			componentMap[componentName] = append(componentMap[componentName], machineName)
+		}
+	}
+	counter := 0
+	for {
+		if counter >= len(machineList) {
+			break
+		}
+		machineName := machineList[counter]
+		machineScheds := s.machineSchedules[machineName]
+		newComponentNames := []string{}
+		for _, machineSched := range machineScheds {
+			componentName := machineSched.ComponentName
+			if _, ok := componentMap[componentName] ; !ok {
+				newComponentNames = append(newComponentNames, componentName)
+			}
+		}
+
+		for _, componentName := range newComponentNames {
+			componentIndex := componentNameToIndex[componentName]
+			candidateMachineList := s.plan.machineAssignment[componentIndex]
+			for _, candidateMachine := range candidateMachineList{
+				machineName := candidateMachine.Name
+				if _, ok := componentMap[componentName]; !ok{
+					componentMap[componentName] = []string{machineName}
+				}else{
+					componentMap[componentName] = append(componentMap[componentName], machineName)
+				}
+
+				if _, ok:= machineMap[machineName]; !ok{
+					machineList = append(machineList, machineName)
+					machineMap[machineName] = true
+				}
+			}
+		}
+
+		counter++
+	}
+
+	maxCycleTime := 1.0
+	affectedMachines := componentMap[componentName]
+	for _, machineName := range affectedMachines{
+		machineSched := s.machineSchedules[machineName]
+		maxCycleTime = math.Max(maxCycleTime, machineSched[len(machineSched)-1].EndTime - machineSched[0].StartTime)
+	}
+	return maxCycleTime
+}
+
+func (s *Schedule) GetMaxCyleTime() float64 {
 	maxTime := 0.0
-	for _, machineSched := range p.machineSchedules {
+	for _, machineSched := range s.machineSchedules {
 		maxTime = math.Max(maxTime, machineSched[len(machineSched)-1].EndTime)
 	}
 	return maxTime
 }
 
+func (s *Schedule) GetMachineSchedule() map[string][]MachineSchedule {
+	return s.machineSchedules
+}
+
 func NewGreedyScheduleFromPlan(plan *Plan) *Schedule {
-	// TODO :create greedy schedule
-	return &Schedule{plan: plan}
+	queue := []scheduleUnit{}
+	i := 0
+
+	for {
+		count := 0
+		for j, componentPlan := range plan.machineAssignment {
+			if i >= len(componentPlan){
+				count++
+				continue
+			}
+			if i >= len(plan.orderedComponents[j].Processes){
+				fmt.Println("panic !!!!")
+				fmt.Println(plan.orderedComponents)
+				fmt.Println(componentPlan)
+				fmt.Println(i,j)
+				panic("panic!!")
+			}
+			machineChosen := componentPlan[i]
+			queue = append(queue, scheduleUnit{machineName:machineChosen.Name,
+				componentName:plan.orderedComponents[j].Name,
+				duration:plan.orderedComponents[j].Processes[i].Duration,
+				processName:plan.orderedComponents[j].Processes[i].Name})
+		}
+		i++
+		if count >= len(plan.machineAssignment){
+			break
+		}
+	}
+	componentTaskTime := map[string]float64{}
+	greedyArrangement := map[string][]MachineSchedule{}
+	for _, queueTask := range queue{
+		queueTaskMachineName := queueTask.machineName
+		queueTaskComponentName := queueTask.componentName
+		queueTaskProcessName := queueTask.processName
+		duration := queueTask.duration
+		var startTime, endTime float64
+		if _, ok := greedyArrangement[queueTaskMachineName]; !ok{
+			startTime = 0.0
+			if currentTime,ok := componentTaskTime[queueTaskComponentName]; ok{
+				startTime = currentTime
+			}
+			endTime = startTime + duration
+			greedyArrangement[queueTaskMachineName] = []MachineSchedule{{
+				ComponentName:queueTaskComponentName, ProcessName:queueTaskProcessName, StartTime:startTime, EndTime:endTime}}
+		}else{
+			startTime = greedyArrangement[queueTaskMachineName][len(greedyArrangement[queueTaskMachineName])-1].EndTime
+			if currentTime,ok := componentTaskTime[queueTaskComponentName]; ok{
+				startTime = math.Max(startTime, currentTime)
+			}
+			endTime = startTime + duration
+			greedyArrangement[queueTaskMachineName] = append(greedyArrangement[queueTaskMachineName],MachineSchedule{
+				ComponentName:queueTaskComponentName, ProcessName:queueTaskProcessName, StartTime:startTime, EndTime:endTime})
+		}
+
+		componentTaskTime[queueTaskComponentName] = endTime
+	}
+	return &Schedule{plan: plan, machineSchedules:greedyArrangement}
 }

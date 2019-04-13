@@ -14,12 +14,14 @@ type Constraint struct {
 type PlanModeller struct {
 	componentMutationRate float64
 	constraint            Constraint
+	quickScan bool
 }
 
-func NewPlanGASolverModel(Machines []Machine, Components []Component) ga.ChromosomeModeller {
+func NewPlanGASolverModel(Machines []Machine, Components []Component, quickScan bool) ga.ChromosomeModeller {
 	return &PlanModeller{
 		constraint:            Constraint{Machines: Machines, Components: Components},
 		componentMutationRate: 0.05,
+		quickScan: quickScan,
 	}
 }
 
@@ -29,7 +31,7 @@ func (pm *PlanModeller) CalculateFitness(chromosome ga.Chromosome) float64 {
 }
 
 func (pm *PlanModeller) GenerateRandom() ga.Chromosome {
-	return NewRandomPlan(pm.constraint)
+	return NewRandomPlan(pm.constraint, pm.quickScan)
 }
 
 func (pm *PlanModeller) Breed(firstParent, secondParend ga.Chromosome) ga.Chromosome {
@@ -47,8 +49,7 @@ func (pm *PlanModeller) Breed(firstParent, secondParend ga.Chromosome) ga.Chromo
 			newMachineAssignment[i] = secondPlan.machineAssignment[i]
 		}
 	}
-
-	return NewPlan(pm.constraint, newMachineAssignment)
+	return NewPlan(pm.constraint, newMachineAssignment, pm.quickScan)
 }
 
 func (pm *PlanModeller) Mutate(chromosome ga.Chromosome) ga.Chromosome {
