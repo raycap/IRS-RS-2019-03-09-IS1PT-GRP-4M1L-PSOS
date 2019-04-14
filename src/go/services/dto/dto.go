@@ -14,8 +14,10 @@ type GaParams struct {
 }
 
 type ComponentRequest struct {
-	Name        string `json:"name"`
-	DesiredUnit int64  `json:"desiredUnit"`
+	Name         string  `json:"name"`
+	DesiredUnit  int64   `json:"desiredUnit"`
+	Price        float64 `json:"price"`
+	MaterialCost float64 `json:"materialCost"`
 }
 
 type RequestPayload struct {

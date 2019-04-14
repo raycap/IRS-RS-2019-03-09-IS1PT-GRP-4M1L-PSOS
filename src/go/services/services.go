@@ -43,17 +43,20 @@ func solveRequest(constraint models.Constraint, componentsRequest []dto.Componen
 	}
 
 	currentTime := 0.0
-	maxAllowedTime := float64(30 * 24 * 60)
+	maxAllowedTime := float64(30 * 8 * 60) // 8 hours everyday
 	totalProfit := 0.0
 	for {
 		if currentTime >= maxAllowedTime {
 			break
 		}
-
+		// create all components that need to be solved
 		componentsQueried := []models.Component{}
 		for _, com := range componentsRequest {
 			if com.DesiredUnit > 0 {
-				componentsQueried = append(componentsQueried, constraint.Components[componentsMap[com.Name]])
+				constraint.Components[componentsMap[com.Name]].Price = com.Price
+				constraint.Components[componentsMap[com.Name]].MaterialCost = com.MaterialCost
+				c := constraint.Components[componentsMap[com.Name]]
+				componentsQueried = append(componentsQueried, c)
 			}
 		}
 		if len(componentsQueried) == 0 {

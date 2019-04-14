@@ -13,6 +13,7 @@ type Component struct {
 	Name         string             `json:"name"`
 	Price        float64            `json:"price"`
 	MarginProfit float64            `json:"marginProfit"`
+	MaterialCost float64            `json:"materialCost"`
 	Processes    []ComponentProcess `json:"process"`
 }
 
@@ -46,7 +47,7 @@ func (c *Component) getFromMarginalProfit() float64 {
 }
 
 func (c *Component) getFromPrice(sortedMachineAssignment []Machine) float64 {
-	var totalCost float64
+	totalCost := c.MaterialCost
 	for i := 0; i < len(sortedMachineAssignment); i++ {
 		totalCost += sortedMachineAssignment[i].Cost * c.Processes[i].Duration
 	}

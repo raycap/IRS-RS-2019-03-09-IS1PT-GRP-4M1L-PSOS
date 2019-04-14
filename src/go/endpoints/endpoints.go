@@ -11,6 +11,7 @@ import (
 )
 
 func TestGaParam(rw http.ResponseWriter, req *http.Request) {
+
 	params, err := parsePOSTRequest(rw, req, &dto.GaParams{})
 	if err != nil {
 		return
