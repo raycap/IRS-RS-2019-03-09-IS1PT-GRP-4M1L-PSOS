@@ -11,7 +11,7 @@ import (
 )
 
 func TestGaParam(rw http.ResponseWriter, req *http.Request) {
-	defer enableCors(&rw)
+	enableCors(&rw)
 	if isOPTIONS(req) {
 		return
 	}
@@ -30,11 +30,11 @@ func TestGaParam(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	sendResponse(rw, resp)
+	sendResponse(&rw, resp)
 }
 
 func Solve(rw http.ResponseWriter, req *http.Request) {
-	defer enableCors(&rw)
+	enableCors(&rw)
 	if isOPTIONS(req) {
 		return
 	}
@@ -55,5 +55,5 @@ func Solve(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	sendResponse(rw, resp)
+	sendResponse(&rw, resp)
 }
