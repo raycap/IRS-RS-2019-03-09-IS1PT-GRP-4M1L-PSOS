@@ -204,10 +204,6 @@ class Submission extends React.Component {
   }
 }
 
-function Welcome(props) {
-  return <h1>Hello, {props.name}</h1>;
-}
-
 function ListItem(props) {
     return <li>{props.name}: {props.value}</li>;
 }
@@ -230,12 +226,45 @@ function ComponentsLeftList(props) {
 function BatchesList(props) {
   const batches = props.batches;
   const batchItems = batches.map((batch, index) =>
-    <TimelinePerBatch key={index} number={index+1} batch={batch}/>
+    <div>
+      <TimelinePerBatch key={'T'+index} number={index+1} batch={batch}/>
+      <BatchMetadata key={'B'+index} batchMetadata={batch.componentsMetadata} />
+    </div>
   );
   return (
     <div className='batch-container'>
       {batchItems}
     </div>
+  );
+}
+
+function BatchMetadata(props) {
+  const batchMetadata = props.batchMetadata
+  const batchHeader = batchMetadata.map((batchUnit) =>
+    <td>
+      {batchUnit.componentName}
+    </td>
+  );
+  const BatchUnitProduced = batchMetadata.map((batchUnit) =>
+    <td>
+      {batchUnit.unitProduced}
+    </td>
+  );
+  return(
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            {batchHeader}
+          </tr>
+        </thead>  
+        <tbody>
+          <tr>
+            <td>Units Produced</td>
+            {BatchUnitProduced}
+          </tr>
+        </tbody>  
+      </table>
   );
 }
 
