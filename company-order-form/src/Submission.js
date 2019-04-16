@@ -2,12 +2,8 @@ import React from 'react'
 import TableForm from './Table'
 import { Input, Button, ButtonGroup , Form, FormGroup, Label , Spinner } from 'reactstrap'
 import './main.css'
-// import axios from 'axios'
-// import Chart from 'react-google-charts';
-// import ReactChartkick, { LineChart, PieChart } from 'react-chartkick'
-// import Chart from 'chart.js'
-
-// ReactChartkick.addAdapter(Chart)
+import axios from 'axios'
+import Chart from 'react-google-charts';
 
 //export default App
 class Submission extends React.Component {
@@ -76,38 +72,46 @@ class Submission extends React.Component {
     };
 	  alert(JSON.stringify(inputData));
     this.setState({ showResult: true })
-	  
-    // axios.post('https://localhost:8080/solve', { json },{})
-    //   .then(response => {
-    //     console.log(response);
-    //     console.log(response.data);
-    //     this.setState({
-    //       schedule: response.data.schedule,
-    //       maxProfits: response.data.maxProfits,
-    //       numOfComponents: response.data.numOfComponents,
-    //       isLoading: false,
-    //       showResult: true
-    //     });
-    //   })
-    //   // If we catch any errors connecting, let's update accordingly
-    //   .catch(error => this.setState({ error, isLoading: false, showResult: false }));
 
-    fetch('http://localhost:8080/solve', {
-      method: 'post',
-      body: JSON.stringify(inputData),
-      mode: 'no-cors'
+// mocked api server : https://8086ab03-0c27-451b-bfad-0f4424821753.mock.pstmn.io/solve
+    axios.post('https://8086ab03-0c27-451b-bfad-0f4424821753.mock.pstmn.io/solve', json, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    })	  
+    // axios.post('https://localhost:8080/solve', { json })
+      .then(response => {
+        console.log(response);
+        console.log(response.data);
+        this.setState({
+          batches: response.data.batches,
+          totalProfit: response.data.totalProfit,
+          componentsLeft: response.data.componentsLeft,
+          isLoading: false,
+          showResult: true
+        });
+      })
+      // If we catch any errors connecting, let's update accordingly
+      .catch(error => this.setState({ error, isLoading: false, showResult: false }));
 
-    }).then(function(response) {
-      console.log(response)
-      console.log(response.data)
-      this.setState({
-        schedule: response.data.schedule,
-        totalProfit: response.data.totalProfit,
-        componentsLeft: response.data.componentsLeft,
-        isLoading: false,
-        showResult: true
-      });
-    }).catch(error => this.setState({ error, isLoading: false, showResult: false }));
+    // fetch('http://localhost:8080/solve', {
+    // fetch('https://6a3fc180-0789-441a-ae49-679b017d51c7.mock.pstmn.io/solve', {
+    //   method: 'post',
+    //   body: JSON.stringify(inputData),
+    //   mode: 'no-cors'
+
+    // }).then(function(response) {
+    //   console.log(response)
+    //   console.log(response.data)
+    //   this.setState({
+    //     batches: response.data.batches,
+    //     totalProfit: response.data.totalProfit,
+    //     componentsLeft: response.data.componentsLeft,
+    //     isLoading: false,
+    //     showResult: true
+    //   });
+    // }).catch(error => this.setState({ error, isLoading: false, showResult: false }));
 
   }
   
@@ -120,9 +124,11 @@ class Submission extends React.Component {
   onRadioBtnClick(rSelected) {
     this.setState({ rSelected });
   }
-  
+
   render() {
-    const { componentsLeft, isLoading, showResult } = this.state;  
+    const { componentsLeft, isLoading, showResult, totalProfit, batches } = this.state;  
+
+  
     if (showResult === true) {
       return (
         <div className='content-container'>  
@@ -134,16 +140,22 @@ class Submission extends React.Component {
               <React.Fragment>
               <div>
                 {!isLoading ? (
-                  // <h2> Total profit is {totalProfit} </h2> 
+                  <div>
+                    <p> Total profit is ${totalProfit}. </p> 
+                    <ComponentsLeftList componentsLeft={componentsLeft} />
+                    <BatchesList batches={batches}/>
+                  </div>  
+                    // componentsLeft.map(component => {
+                    //   const { name, desiredUnit } = component;
+                    //   return (
+
+                    //     <h3>Number of {name} not able to be produced: {desiredUnit}</h3>
+                    //   );
+                    // })
                   // display schedule
-                  componentsLeft.map(component => {
-                    const { name, desiredUnit } = component;
-                    return (
-                      <h3>Number of {name} not able to be produced: {desiredUnit}</h3>
-                    );
-                  })
+                  // <TableForm />
                 ) : (
-				  <div>
+				          <div>
                     <Spinner type="grow" color="primary" />
                     <Spinner type="grow" color="secondary" />
                     <Spinner type="grow" color="success" />
@@ -164,13 +176,6 @@ class Submission extends React.Component {
       )	  
     };
 	
-    // const lineData = [
-    //   {"name":"M1", "data": {"1": 3, "2017-01-02": 4}},
-    //   {"name":"M2", "data": {"2017-01-01": 5, "2017-01-02": 3}},
-    //   {"name":"M3", "data": {"2017-01-01": 5, "2017-01-02": 3}},
-    //   {"name":"M4", "data": {"2017-01-01": 5, "2017-01-02": 3}},
-    //   {"name":"M5", "data": {"2017-01-01": 5, "2017-01-02": 3}}
-    // ];
 	  return (
       <div className='content-container'>  
         <h1>Machine Scheduling Optimizer</h1>
@@ -196,6 +201,92 @@ class Submission extends React.Component {
       </div>
     );
   }
+}
+
+function Welcome(props) {
+  return <h1>Hello, {props.name}</h1>;
+}
+
+function ListItem(props) {
+    return <li>{props.name}: {props.value}</li>;
+}
+
+function ComponentsLeftList(props) {
+  const componentsLeft = props.componentsLeft;
+  const listItems = componentsLeft.map((component) =>
+    <ListItem key={component.name} value={component.desiredUnit} name={component.name} />
+  );
+  return (
+    <div>
+      <h5>Components that cannot be produced within the month</h5>
+      <ul>
+        {listItems}
+      </ul> 
+    </div> 
+  );
+}
+
+function BatchesList(props) {
+  const batches = props.batches;
+  const batchItems = batches.map((batch, index) =>
+    <TimelinePerBatch key={index} number={index+1} batch={batch}/>
+  );
+  return (
+    <div className='batch-container'>
+      {batchItems}
+    </div>
+  );
+}
+
+function TimelinePerBatch(props) {
+  const batch = props.batch
+  const headerData = [
+    { type: 'string', id: 'MachineName' },
+    { type: 'string', id: 'ComponentName' },
+    { type: 'string', role: 'tooltip' },
+    { type: 'date', id: 'Start' },
+    { type: 'date', id: 'End' }
+  ]
+  const data = GetBatchSchedule(batch.machineSchedules)
+  data.unshift(headerData)
+  return (
+    <div>
+      <h3> Batch No. {props.number} </h3>
+      <Chart
+      width={'100%'}
+      height={'40%'}
+      chartType="Timeline"
+      loader={<div>Loading Chart</div>}
+      data={data}
+      options={{
+        showRowNumber: true,
+      }}
+      rootProps={{ 'data-testid': '1' }}
+      />
+    </div>
+  );  
+}
+
+function GetBatchSchedule(machineSchedules) {
+  const machineArr = ['M1','M2','M3','M4','M5','M6'];
+  let finalArr = [];
+
+
+  machineArr.forEach((machine) => {
+    let a = machineSchedules[machine];
+    if (a) {
+      a.forEach((details) => {
+        let b = [machine, details['componentName'], details['processName'], add_minutes(new Date(0, 0, 0, 0, 0, 0), details['startTime']), add_minutes(new Date(0, 0, 0, 0, 0, 0), details['endTime'])]
+        finalArr.push(b)
+      });
+    }
+  });
+  return finalArr
+}
+
+const add_minutes =  function (dt, minutes) {
+    dt.setMinutes(minutes)
+    return dt
 }
 
 export default Submission
