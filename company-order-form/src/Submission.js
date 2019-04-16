@@ -250,6 +250,16 @@ function BatchMetadata(props) {
       {batchUnit.unitProduced}
     </td>
   );
+  const BatchUnitProfit = batchMetadata.map((batchUnit) =>
+    <td>
+      {batchUnit.unitProfit}
+    </td>
+  );
+  const BatchCycleTime = batchMetadata.map((batchUnit) =>
+    <td>
+      {batchUnit.cycleTime}
+    </td>
+  );
   return(
       <table>
         <thead>
@@ -263,6 +273,14 @@ function BatchMetadata(props) {
             <td>Units Produced</td>
             {BatchUnitProduced}
           </tr>
+          <tr>
+            <td>Unit Profit</td>
+            {BatchUnitProfit}
+          </tr> 
+          <tr>
+            <td>Cycle Time</td>
+            {BatchCycleTime}
+          </tr>   
         </tbody>  
       </table>
   );
