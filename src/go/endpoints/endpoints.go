@@ -11,11 +11,12 @@ import (
 )
 
 func TestGaParam(rw http.ResponseWriter, req *http.Request) {
-	defer enableCors(rw)
-
+	defer enableCors(&rw)
+	if isOPTIONS(req) {
+		return
+	}
 	params, err := parsePOSTRequest(rw, req, &dto.GaParams{})
 	if err != nil {
-		http.Error(rw, err.Error(), 500)
 		return
 	}
 	reqParams := params.(*dto.GaParams)
@@ -33,16 +34,19 @@ func TestGaParam(rw http.ResponseWriter, req *http.Request) {
 }
 
 func Solve(rw http.ResponseWriter, req *http.Request) {
-	defer enableCors(rw)
+	defer enableCors(&rw)
+	if isOPTIONS(req) {
+		return
+	}
 
 	params, err := parsePOSTRequest(rw, req, &dto.RequestPayload{})
 	if err != nil {
-		http.Error(rw, err.Error(), 500)
 		return
 	}
 	reqParams := params.(*dto.RequestPayload)
 
 	now := time.Now().UnixNano()
+	fmt.Printf("Start processing request: %v\n", reqParams)
 	resp, err := services.SolveWithFixtures(reqParams)
 	fmt.Printf("time taken to solve the request : %d ms\n", (time.Now().UnixNano()-now)/1000000)
 

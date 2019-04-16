@@ -9,7 +9,7 @@ import (
 )
 
 func parsePOSTRequest(rw http.ResponseWriter, req *http.Request, defaultValue interface{}) (interface{}, error) {
-	fmt.Printf("received request : method :%s, url : %s, body: %v\n", req.Method, req.URL, req.Body)
+	fmt.Printf("received request : method :%s, url : %s\n", req.Method, req.URL)
 	if req.Method != "POST" {
 		http.Error(rw, "request must be POST", 400)
 		return defaultValue, fmt.Errorf("method error")
@@ -31,4 +31,8 @@ func parsePOSTRequest(rw http.ResponseWriter, req *http.Request, defaultValue in
 		return defaultValue, err
 	}
 	return copied, nil
+}
+
+func isOPTIONS(req *http.Request) bool {
+	return req.Method == "OPTIONS"
 }

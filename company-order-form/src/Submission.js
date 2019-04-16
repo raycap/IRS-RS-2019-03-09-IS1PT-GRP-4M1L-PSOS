@@ -30,42 +30,42 @@ class Submission extends React.Component {
       "quickScan": this.state.rSelected,
       "components": [{
   		  "name": "C1", 
-  		  "cost": parseInt(json.A1),
+  		  "materialCost": parseInt(json.A1),
   		  "price": parseInt(json.A2),
   		  "desiredUnit": parseInt(json.A3, 10)
       }, {
         "name": "C2",
-	      "cost": parseInt(json.B1),
+	      "materialCost": parseInt(json.B1),
 	      "price": parseInt(json.B2),
         "desiredUnit": parseInt(json.B3,10)
       }, {
         "name": "C3",
-	      "cost": parseInt(json.C1),
+	      "materialCost": parseInt(json.C1),
 	      "price": parseInt(json.C2),
         "desiredUnit": parseInt(json.C3,10)
       }, {
         "name": "C4",
-	      "cost": parseInt(json.D1),
+	      "materialCost": parseInt(json.D1),
 	      "price": parseInt(json.D2),
         "desiredUnit": parseInt(json.D3,10)
       }, {
         "name": "C5",
-	      "cost": parseInt(json.E1),
+	      "materialCost": parseInt(json.E1),
 	      "price": parseInt(json.E2),
         "desiredUnit": parseInt(json.E3,10)
       }, {
         "name": "C6",
-	      "cost": parseInt(json.F1),
+	      "materialCost": parseInt(json.F1),
 	      "price": parseInt(json.F2),
         "desiredUnit": parseInt(json.F3,10)
       }, {
         "name": "C7",
-	      "cost": parseInt(json.G1),
+	      "materialCost": parseInt(json.G1),
 	      "price": parseInt(json.G2),
         "desiredUnit": parseInt(json.G3,10)
       }, {
         "name": "C8",
-	      "cost": parseInt(json.H1),
+	      "materialCost": parseInt(json.H1),
 	      "price": parseInt(json.H2),
         "desiredUnit": parseInt(json.H3,10)
       }]
@@ -74,13 +74,14 @@ class Submission extends React.Component {
     this.setState({ showResult: true })
 
 // mocked api server : https://8086ab03-0c27-451b-bfad-0f4424821753.mock.pstmn.io/solve
-    axios.post('https://8086ab03-0c27-451b-bfad-0f4424821753.mock.pstmn.io/solve', json, {
+//     axios.post('https://8086ab03-0c27-451b-bfad-0f4424821753.mock.pstmn.io/solve', json, {
+      axios.post('http://localhost:8080/solve',  inputData, {
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        // 'Content-Type': 'application/json',
+        // 'Access-Control-Allow-Origin': '*'
       }
-    })	  
-    // axios.post('https://localhost:8080/solve', { json })
+    })
+//     axios.post('http://localhost:8080/solve', { json })
       .then(response => {
         console.log(response);
         console.log(response.data);
@@ -96,11 +97,11 @@ class Submission extends React.Component {
       .catch(error => this.setState({ error, isLoading: false, showResult: false }));
 
     // fetch('http://localhost:8080/solve', {
-    // fetch('https://6a3fc180-0789-441a-ae49-679b017d51c7.mock.pstmn.io/solve', {
+    // // fetch('https://6a3fc180-0789-441a-ae49-679b017d51c7.mock.pstmn.io/solve', {
     //   method: 'post',
     //   body: JSON.stringify(inputData),
     //   mode: 'no-cors'
-
+    //
     // }).then(function(response) {
     //   console.log(response)
     //   console.log(response.data)
