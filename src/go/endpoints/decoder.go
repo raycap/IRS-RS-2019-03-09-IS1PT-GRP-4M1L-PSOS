@@ -9,6 +9,7 @@ import (
 )
 
 func parsePOSTRequest(rw http.ResponseWriter, req *http.Request, defaultValue interface{}) (interface{}, error) {
+	fmt.Printf("received request : method :%s, url : %s, body: %v\n", req.Method, req.URL, req.Body)
 	if req.Method != "POST" {
 		http.Error(rw, "request must be POST", 400)
 		return defaultValue, fmt.Errorf("method error")
