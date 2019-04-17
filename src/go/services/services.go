@@ -96,7 +96,7 @@ func solveRequest(constraint models.Constraint, componentsRequest []dto.Componen
 
 		minDuration += jobSched.GetMaxCyleTime()
 		batch := dto.Batches{
-			MachineSchedule:    jobSched.GetMachineSchedule(),
+			MachineSchedule:    jobSched.GetSimulatedMachineSchedule(),
 			StartTime:          currentTime,
 			EndTime:            currentTime + minDuration,
 			ComponentsMetadata: compMetadata,
