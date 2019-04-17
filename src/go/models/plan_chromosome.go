@@ -66,7 +66,7 @@ func (p *Plan) getBestSched() (*Plan, *Schedule) {
 		bestOrderedPlan = p
 	} else {
 		bestSchedulerSolver := NewScheduleSolverGA(Constraint{Machines: p.orderedMachines, Components: p.orderedComponents}, *p)
-		bestOrderedPlan = ga.New(75, 15, 50, 0.02, bestSchedulerSolver, true).Solve().(*Plan)
+		bestOrderedPlan = ga.New(100, 15, 50, 0.02, bestSchedulerSolver, true).Solve().(*Plan)
 	}
 	bestSchedule := NewGreedyScheduleFromPlan(bestOrderedPlan)
 	return p, bestSchedule

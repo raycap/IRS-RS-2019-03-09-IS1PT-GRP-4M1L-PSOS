@@ -57,7 +57,6 @@ func (ga *geneticsAlgoImpl) Solve() Chromosome {
 	} else {
 		rankedPopulations = ga.rank(populations)
 	}
-
 	return rankedPopulations[0].chromosome
 }
 

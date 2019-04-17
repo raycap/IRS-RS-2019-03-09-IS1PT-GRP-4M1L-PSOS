@@ -29,6 +29,9 @@ func (c *Component) GetProfit(sortedMachineAssignment []Machine) float64 {
 
 func (c *Component) GenerateRandomAssignment(machineList []Machine) []Machine {
 	machines := make([]Machine, len(c.Processes))
+	if rand.Int63n(10)%2 == 0 {
+		return []Machine{}
+	}
 	for i := 0; i < len(c.Processes); i++ {
 		processName := c.Processes[i].Name
 		candidates := []Machine{}

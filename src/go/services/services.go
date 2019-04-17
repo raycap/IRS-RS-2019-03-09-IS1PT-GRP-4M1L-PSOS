@@ -3,6 +3,8 @@ package services
 import (
 	"math"
 
+	"fmt"
+
 	"../ga"
 	"../models"
 	"./dto"
@@ -13,7 +15,8 @@ func ResultWithGaParam(reqParams *dto.GaParams) (dto.ResponsePayload, error) {
 
 	gaSolver := ga.New(reqParams.PopSize, reqParams.EliteSize, reqParams.Generations, 0.07, modeller, reqParams.UseCon)
 	bestPlan := gaSolver.Solve().(*models.Plan)
-
+	fmt.Println("score")
+	fmt.Println(bestPlan.CalculateScore())
 	return dto.ResponsePayload{
 		Batches: []dto.Batches{
 			{MachineSchedule: bestPlan.GetBestSchedule().GetMachineSchedule()},
