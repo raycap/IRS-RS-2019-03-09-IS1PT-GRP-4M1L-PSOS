@@ -6,8 +6,13 @@
 
 ---
 ## SECTION 2 : EXECUTIVE SUMMARY / PAPER ABSTRACT
-Manufacturing sector has been the key pillar of Singapore's strong economy. As manufacturing sector is a capital intensive and cost sensitive industry, Singapore's manufacturing has moved towards high-value added sectors in order to differentiate itself from other cost-competitive countries. Latest Singapore's economy data shows manufacturing sector remains the top GDP contribution sector, contributing approximately 21% of nominal GDP in 2018. 
+Manufacturing sector has been the key pillar of Singapore's strong economy. As manufacturing sector is a capital intensive and cost sensitive industry, Singapore's manufacturing has moved towards high-value added sectors in order to differentiate itself from other cost-competitive countries. Latest Singapore's economy data shows manufacturing sector remains the top GDP contribution sector, contributing approximately 21% of nominal GDP in 2018.
 
+In advanced manufacturing, automation is the key enabler for higher productivity and quality control. As automation requires machine and process synchronization, increasing level of automation also increases the challenge to utilize available resources for maximum throughput with minimum cost. For businesses which adopt high mix low volume manufacturing strategy, the key goal is to determine the best plan that yields highest profit or achieve lowest production cost for high mix design which requires different set of processes respectively.  
+
+Adding other factors like required delivery leadtime, minimum fulfilled quantity, gross margin per order into the equation, it is obvious that human planning and scheduling is no longer efficient and optimized in any possible way. A near real-time production scheduling system becomes a vital solution to address such multi-resource, multi-project problem. A smart scheduling system also increases operation agility to better respond to dynamic business needs. 
+
+For our project, we designed a production scheduling system to optimize the job scheduling for multiple components undergoing various manufacturing processes. Machine capacity, assigned process capability and operating cost are defined in the problem in order to reflect the actual business operations. Our goal is to optimize scheduling problem and maximize profits in the same time. 
 
 ---
 ## SECTION 3 : CREDITS / PROJECT CONTRIBUTION
