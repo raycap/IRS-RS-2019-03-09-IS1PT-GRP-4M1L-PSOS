@@ -142,7 +142,7 @@ class Submission extends React.Component {
               <div>
                 {!isLoading ? (
                   <div>
-                    <p> Total profit is ${totalProfit}. </p> 
+                    <p> Total profit is ${totalProfit<0 ? (0):(totalProfit)}. </p> 
                     <ComponentsLeftList componentsLeft={componentsLeft} />
                     <BatchesList batches={batches}/>
                   </div>  
