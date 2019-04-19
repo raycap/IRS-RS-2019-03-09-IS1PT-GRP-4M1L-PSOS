@@ -225,10 +225,10 @@ function ComponentsLeftList(props) {
 
 function BatchesList(props) {
   const batches = props.batches;
-  const batchItems = batches.map((batch, index) =>
-    <div>
-      <TimelinePerBatch key={'T'+index} number={index+1} batch={batch}/>
-      <BatchMetadata key={'B'+index} batchMetadata={batch.componentsMetadata} />
+  const batchItems = batches.map((batch, index) => 
+    <div key={'T'+index}>
+      <TimelinePerBatch number={index+1} batch={batch}/>
+      <BatchMetadata batchMetadata={batch.componentsMetadata} />
     </div>
   );
   return (
@@ -240,23 +240,23 @@ function BatchesList(props) {
 
 function BatchMetadata(props) {
   const batchMetadata = props.batchMetadata
-  const batchHeader = batchMetadata.map((batchUnit) =>
-    <td>
+  const batchHeader = batchMetadata.map((batchUnit, index) =>
+    <td key={'U' + index}> 
       {batchUnit.componentName}
     </td>
   );
-  const BatchUnitProduced = batchMetadata.map((batchUnit) =>
-    <td>
+  const BatchUnitProduced = batchMetadata.map((batchUnit, index) =>
+    <td key={'Produced' + index}>
       {batchUnit.unitProduced}
     </td>
   );
-  const BatchUnitProfit = batchMetadata.map((batchUnit) =>
-    <td>
+  const BatchUnitProfit = batchMetadata.map((batchUnit, index) =>
+    <td key={'Profit' + index}>
       {batchUnit.unitProfit}
     </td>
   );
-  const BatchCycleTime = batchMetadata.map((batchUnit) =>
-    <td>
+  const BatchCycleTime = batchMetadata.map((batchUnit, index) =>
+    <td key={'CT' + index}>
       {batchUnit.cycleTime}
     </td>
   );
