@@ -1,31 +1,12 @@
 ## SECTION 1 : PROJECT TITLE
-## 4M1L - Credit Card Recommendation System
+## 4M1L - Production Scheduling Optimization System
 
 <img src="Miscellaneous/home.png"
      style="float: left; margin-right: 0px;" />
 
 ---
 ## SECTION 2 : EXECUTIVE SUMMARY / PAPER ABSTRACT
-A vibrant city located in the heart of Asia, Singapore offers global investors unparalleled access to global markets. Strategically located to serve Asia Pacific, one of the world’s fastest-growing regions, Singapore’s well-established business infrastructure, global connectivity and trade linkages enable investors to access the approximately 4 billion strong Asian market within a radius of 7 hours’ flight time.
-In Singapore, one of the first things people do after getting their first job is to apply for a credit card. It makes perfect sense that paying with a credit card allows them to enjoy many benefits that using cash wouldn’t provide. With the advancement of technology, the people nowadays could even embed the credit card with their phone with the various mobile payment introduced such as Apple Pay, Samsung Pay, Google Pay and etc.
-
-In the past, carrying credit cards were considered one of the elusive “5Cs” (Cash, Car,
-Credit card, Condominium and Country club membership) that people in Singapore
-worked hard to attain. Today, owning a credit card is not only the norm, but the
-financially-savvy option.
-
-However, picking a credit card can be a very frustrating process and most of the people
-have went through a hard time in finding the best credit card. By trying to optimize the
-reward from credit card, they might have fallen into the pitfall of applying excessive
-credit card, resulting in burdened themselves with unnecessary late payment charge or
-principal annual fee. Overall, no single credit card is better than all others in all
-categories, but by asking the right questions, each person can find the card that best fit his spending habit and credit situation.
-
-Our team, comprising of 5 members from different nationalities, looking forward to
-achieve financial freedom in one day. As the first step towards the financial freedom, we
-have developed a credit card recommendation system, with the aim to help all the first
-time credit card applicants in optimizing the credit card selection and better their
-financial management.
+Manufacturing sector has been the key pillar of Singapore's strong economy. As manufacturing sector is a capital intensive and cost sensitive industry, Singapore's manufacturing has moved towards high-value added sectors in order to differentiate itself from other cost-competitive countries. Latest Singapore's economy data shows manufacturing sector remains the top GDP contribution sector, contributing approximately 21% of nominal GDP in 2018. 
 
 
 ---
