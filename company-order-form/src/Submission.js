@@ -70,7 +70,6 @@ class Submission extends React.Component {
         "desiredUnit": parseInt(json.H3,10)
       }]
     };
-	  alert(JSON.stringify(inputData));
     this.setState({ showResult: true })
 
 // mocked api server : https://8086ab03-0c27-451b-bfad-0f4424821753.mock.pstmn.io/solve
