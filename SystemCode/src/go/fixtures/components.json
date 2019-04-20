@@ -3,30 +3,40 @@
     "name": "C1",
     "price": 10.0, "marginProfit": 0.0,
     "process": [
-      { "processName": "P1", "duration": 3.0 }
+      { "processName": "P1", "duration": 5.0 },
+      { "processName": "P2", "duration": 3.0 },
+      { "processName": "P3-1", "duration": 1.0 },
+      { "processName": "P5", "duration": 3.0 },
+      { "processName": "P3-2", "duration": 1.0 }
     ]
   },
   {
     "name": "C2",
     "price": 12.0, "marginProfit": 0.0,
     "process": [
-      { "processName": "P1", "duration": 2.0 },
-      { "processName": "P2", "duration": 3.0 }
+      { "processName": "P1", "duration": 5.0 },
+      { "processName": "P2", "duration": 3.0 },
+      { "processName": "P3-1", "duration": 1.0 },
+      { "processName": "P4", "duration": 2.0 }
     ]
   },
   {
     "name": "C3",
     "price": 8.0, "marginProfit": 0.0,
     "process": [
-      { "processName": "P2", "duration": 3.0 }
+      { "processName": "P1", "duration": 7.0 },
+      { "processName": "P2", "duration": 3.0 },
+      { "processName": "P3-1", "duration": 1.0 }
     ]
   },
   {
     "name": "C4",
     "price": 14.0, "marginProfit": 0.0,
     "process": [
-      { "processName": "P2", "duration": 3.5 },
-      { "processName": "P3", "duration": 2.0 }
+      { "processName": "P1", "duration": 7.0 },
+      { "processName": "P2", "duration": 5.0 },
+      { "processName": "P3-1", "duration": 1.0 },
+      { "processName": "P4", "duration": 2.0 }
     ]
   },
   {
@@ -34,32 +44,35 @@
     "price": 25.0, "marginProfit": 0.0,
     "process": [
       { "processName": "P1", "duration": 4.0 },
-      { "processName": "P2", "duration": 2.5 },
-      { "processName": "P3", "duration": 1.0 }
+      { "processName": "P2", "duration": 3.0 },
+      { "processName": "P3-1", "duration": 1.0 }
     ]
   },
   {
     "name": "C6",
     "price": 20.0, "marginProfit": 0.0,
     "process": [
-      { "processName": "P1", "duration": 2.0 },
-      { "processName": "P3", "duration": 2.0 },
-      { "processName": "P2", "duration": 2.0 }
+      { "processName": "P1", "duration": 4.0 },
+      { "processName": "P2", "duration": 2.0 },
+      { "processName": "P3-1", "duration": 1.0 },
+      { "processName": "P5", "duration": 3.0 },
+      { "processName": "P3-2", "duration": 1.0 }
     ]
   },
   {
     "name": "C7",
     "price": 15.0, "marginProfit": 0.0,
     "process": [
-      { "processName": "P5", "duration": 2.0 }
+      { "processName": "P5", "duration": 5.0 },
+      { "processName": "P3-2", "duration": 2.0 }
     ]
   },
   {
     "name": "C8",
     "price": 14.0, "marginProfit": 0.0,
     "process": [
-      { "processName": "P3", "duration": 3.5 },
-      { "processName": "P2", "duration": 2.0 }
+      { "processName": "P2", "duration": 2.0 },
+      { "processName": "P3-1", "duration": 1.5 }
     ]
   }
 

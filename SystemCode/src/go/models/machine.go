@@ -17,3 +17,8 @@ func NewMachine(name string, cost float64, processNames []string) Machine {
 	}
 	return m
 }
+
+func NewMachineWithProcessMap(name string, cost float64, processMap map[string]bool) Machine {
+	m := Machine{Name: name, Cost: cost, ProcessNames: processMap}
+	return m
+}

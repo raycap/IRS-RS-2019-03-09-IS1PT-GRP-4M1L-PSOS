@@ -6,9 +6,16 @@ import (
 	"os"
 	"reflect"
 
+	"fmt"
+
 	"../ga"
 	"../models"
 )
+
+type MachineFixtures struct {
+	models.Machine
+	Quantity int `json:"quantity"`
+}
 
 func generateModels(quickScan bool) ga.ChromosomeModeller {
 	machines := []models.Machine{
@@ -42,7 +49,7 @@ func generateModels(quickScan bool) ga.ChromosomeModeller {
 }
 
 func generateFromFixtures() ([]models.Machine, []models.Component, error) {
-	m, err := parseJSON("./fixtures/machines.json", &[]models.Machine{})
+	m, err := parseJSON("./fixtures/machines.json", &[]MachineFixtures{})
 	if err != nil {
 		return nil, nil, err
 	}
@@ -52,8 +59,14 @@ func generateFromFixtures() ([]models.Machine, []models.Component, error) {
 		return nil, nil, err
 	}
 	components := c.(*[]models.Component)
-	machines := m.(*[]models.Machine)
-	return *machines, *components, nil
+
+	machines := []models.Machine{}
+	for _, machine := range *m.(*[]MachineFixtures) {
+		for i := 1; i <= machine.Quantity; i++ {
+			machines = append(machines, models.NewMachineWithProcessMap(fmt.Sprintf("%s-%d", machine.Name, i), machine.Cost, machine.ProcessNames))
+		}
+	}
+	return machines, *components, nil
 }
 
 func parseJSON(fixturesPath string, defaultValue interface{}) (interface{}, error) {

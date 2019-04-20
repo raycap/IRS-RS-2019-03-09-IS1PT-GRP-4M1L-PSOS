@@ -1,44 +1,44 @@
 [
   {
-    "name": "M1",
-    "cost": 1.5,
-    "handledProcess": {
-      "P1": true, "P2": true
-    }
+    "name": "CNC-5 Machine",
+    "cost": 0.05,
+    "quantity": 3,
+    "handledProcess": {"P1": true}
   },
   {
-    "name": "M2",
-    "cost": 0.75,
-    "handledProcess": {
-      "P1": true
-    }
+    "name": "CNC-3 Machine",
+    "cost": 0.03,
+    "quantity": 2,
+    "handledProcess": {"P1": true}
   },
   {
-    "name": "M3",
-    "cost": 3.0,
-    "handledProcess": {
-      "P1": true, "P2": true, "P3": true
-    }
+    "name": "Deburring Machine",
+    "cost": 0.02,
+    "quantity": 2,
+    "handledProcess": {"P2": true}
   },
   {
-    "name": "M4",
-    "cost": 3.0,
-    "handledProcess": {
-      "P1": true, "P3": true
-    }
+    "name": "Polishing Machine",
+    "cost": 0.03,
+    "quantity": 2,
+    "handledProcess": {"P4": true}
   },
   {
-    "name": "M5",
-    "cost": 3.0,
-    "handledProcess": {
-      "P5": true
-    }
+    "name": "Vision measuring Machine",
+    "cost": 0.02,
+    "quantity": 1,
+    "handledProcess": {"P3-2": true}
   },
   {
-    "name": "M6",
-    "cost": 1.5,
-    "handledProcess": {
-      "P2": true, "P3": true
-    }
+    "name": "Coordinate measuring Machine",
+    "cost": 0.02,
+    "quantity": 2,
+    "handledProcess": {"P3-1": true}
+  },
+  {
+    "name": "Electroplating Machine",
+    "cost": 0.1,
+    "quantity": 1,
+    "handledProcess": {"P5": true}
   }
 ]

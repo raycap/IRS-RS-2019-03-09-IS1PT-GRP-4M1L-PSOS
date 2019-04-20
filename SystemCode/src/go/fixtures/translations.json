@@ -2,12 +2,17 @@
   "keys":{
     "P1": "CNC Machining",
     "P2": "Deburring",
-    "P3": "Inspection",
+    "P3-1": "Inspection (Coordinate)",
+    "P3-2": "Inspection (Visual)",
     "P4": "Polishing",
     "P5": "Plating",
-    "C1": "Samsung Case",
-    "C2": "Apple Case",
-    "C3": "Samsung Tablet Case",
-    "C4": "Huawei Case"
+    "C1": "Samsung S9 Silicone Case (Coloured)",
+    "C2": "Huawei P30 Clear Case",
+    "C3": "Samsung Galaxy Tab A.10.1 Case",
+    "C4": "Microsoft Surface Pro 5 Protective Case",
+    "C5": "Iphone X Normal Case",
+    "C6": "Iphone XS SE Case (Gold Colour)",
+    "C7": "Iphone XS Colour",
+    "C8": "Ipad Pro 12.9 inch Case"
   }
 }

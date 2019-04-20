@@ -98,7 +98,7 @@ func solveRequest(constraint models.Constraint, componentsRequest []dto.Componen
 			if componentsRequest[componentReqMap[qCom.Name]].DesiredUnit <= 0 {
 				componentsRequest[componentReqMap[qCom.Name]].DesiredUnit = 0
 			}
-			unitProfit := constraint.Components[componentsMap[qCom.Name]].GetProfit(bestPlan.GetMachineAssignment()[i])
+			unitProfit := float64(int64(constraint.Components[componentsMap[qCom.Name]].GetProfit(bestPlan.GetMachineAssignment()[i])*100)) / 100.0
 
 			compMetadata = append(compMetadata, dto.ComponentMetadata{
 				ComponentName: keytranslation.Get(qCom.Name), UnitProduced: unitProduced, CycleTime: cycleTime,

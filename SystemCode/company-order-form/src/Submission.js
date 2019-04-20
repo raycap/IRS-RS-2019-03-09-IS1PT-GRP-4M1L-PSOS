@@ -315,7 +315,11 @@ function TimelinePerBatch(props) {
 }
 
 function GetBatchSchedule(machineSchedules) {
-  const machineArr = ['M1','M2','M3','M4','M5','M6'];
+  const machineArr = ['CNC-5 Machine-1','CNC-5 Machine-2','CNC-5 Machine-3',
+      'CNC-3 Machine-1','CNC-3 Machine-2',
+      'Deburring Machine-1','Deburring Machine-2',
+      'Polishing Machine-1','Polishing Machine-2',
+      'Vision measuring Machine-1','Coordinate measuring Machine-1','Coordinate measuring Machine-2', 'Electroplating Machine-1'];
   let finalArr = [];
 
 

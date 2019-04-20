@@ -18,7 +18,7 @@ const TableBody = () => {
   return (
 	<tbody>
 	  <tr>
-		<th scope="row">Component A</th>
+		<th scope="row">Samsung S9 Silicone Case (Coloured)</th>
 		<td>
 		  <input type="text" name="A1" />
 		</td>
@@ -30,7 +30,7 @@ const TableBody = () => {
 		</td>
 	  </tr>
 	  <tr>
-		<th scope="row">Component B</th>
+		<th scope="row">Huawei P30 Clear Case</th>
 		<td>
 		  <input type="text" name="B1" />
 		</td>
@@ -42,7 +42,7 @@ const TableBody = () => {
 		</td>
 	  </tr>
 	  <tr>
-		<th scope="row">Component C</th>
+		<th scope="row">Samsung Galaxy Tab A.10.1 Case</th>
 		<td>
 		  <input type="text" name="C1" />
 		</td>
@@ -54,7 +54,7 @@ const TableBody = () => {
 		</td>
 	  </tr>
 	  <tr>
-		<th scope="row">Component D</th>
+		<th scope="row">Microsoft Surface Pro 5 Protective Case</th>
 		<td>
 		  <input type="text" name="D1" />
 		</td>
@@ -66,7 +66,7 @@ const TableBody = () => {
 		</td>
 	  </tr>
 	  <tr>
-		<th scope="row">Component E</th>
+		<th scope="row">Iphone X Normal Case</th>
 		<td>
 		  <input type="text" name="E1" />
 		</td>
@@ -78,7 +78,7 @@ const TableBody = () => {
 		</td>
 	  </tr>
 	  <tr>
-		<th scope="row">Component F</th>
+		<th scope="row">Iphone XS SE Case (Gold Colour)</th>
 		<td>
 		  <input type="text" name="F1" />
 		</td>
@@ -90,7 +90,7 @@ const TableBody = () => {
 		</td>
 	  </tr>
 	  <tr>
-		<th scope="row">Component G</th>
+		<th scope="row">Iphone XS Colour</th>
 		<td>
 		  <input type="text" name="G1" />
 		</td>
@@ -102,7 +102,7 @@ const TableBody = () => {
 		</td>
 	  </tr>
 	  <tr>
-		<th scope="row">Component H</th>
+		<th scope="row">Ipad Pro 12.9 inch Case</th>
 		<td>
 		  <input type="text" name="H1" />
 		</td>
