@@ -3,6 +3,8 @@ package models
 import (
 	"fmt"
 	"math"
+
+	keytranslation "../key_translation"
 )
 
 type MachineSchedule struct {
@@ -109,7 +111,7 @@ func (s *Schedule) GetSimulatedMachineSchedule() map[string][]MachineSchedule {
 	simulatedMachineSchedules := map[string][]MachineSchedule{}
 	for machineName, machineSchedules := range s.machineSchedules {
 		if machineSchedules[len(machineSchedules)-1].EndTime >= maxTime {
-			simulatedMachineSchedules[machineName] = machineSchedules
+			simulatedMachineSchedules[machineName] = machineSchedulesWithTranslation(machineSchedules)
 			continue
 		}
 		componentName := machineSchedules[0].ComponentName
@@ -121,7 +123,7 @@ func (s *Schedule) GetSimulatedMachineSchedule() map[string][]MachineSchedule {
 			}
 		}
 		if cycleTime == 0 {
-			simulatedMachineSchedules[machineName] = machineSchedules
+			simulatedMachineSchedules[machineName] = machineSchedulesWithTranslation(machineSchedules)
 			continue
 		}
 		i := 0
@@ -136,7 +138,8 @@ func (s *Schedule) GetSimulatedMachineSchedule() map[string][]MachineSchedule {
 				ComponentName: ms.ComponentName, ProcessName: ms.ProcessName, StartTime: startTime, EndTime: endTime})
 			i++
 		}
-		simulatedMachineSchedules[machineName] = machineSchedules
+
+		simulatedMachineSchedules[machineName] = machineSchedulesWithTranslation(machineSchedules)
 	}
 
 	return simulatedMachineSchedules
@@ -200,4 +203,12 @@ func NewGreedyScheduleFromPlan(plan *Plan) *Schedule {
 		componentTaskTime[queueTaskComponentName] = endTime
 	}
 	return &Schedule{plan: plan, machineSchedules: greedyArrangement}
+}
+
+func machineSchedulesWithTranslation(ms []MachineSchedule) []MachineSchedule {
+	for index, _ := range ms {
+		ms[index].ProcessName = keytranslation.Get(ms[index].ProcessName)
+		ms[index].ComponentName = keytranslation.Get(ms[index].ComponentName)
+	}
+	return ms
 }

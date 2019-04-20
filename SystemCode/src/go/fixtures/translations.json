@@ -1,0 +1,13 @@
+{
+  "keys":{
+    "P1": "CNC Machining",
+    "P2": "Deburring",
+    "P3": "Inspection",
+    "P4": "Polishing",
+    "P5": "Plating",
+    "C1": "Samsung Case",
+    "C2": "Apple Case",
+    "C3": "Samsung Tablet Case",
+    "C4": "Huawei Case"
+  }
+}

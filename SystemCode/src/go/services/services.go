@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"../ga"
+	keytranslation "../key_translation"
 	"../models"
 	"./dto"
 )
@@ -100,7 +101,7 @@ func solveRequest(constraint models.Constraint, componentsRequest []dto.Componen
 			unitProfit := constraint.Components[componentsMap[qCom.Name]].GetProfit(bestPlan.GetMachineAssignment()[i])
 
 			compMetadata = append(compMetadata, dto.ComponentMetadata{
-				ComponentName: qCom.Name, UnitProduced: unitProduced, CycleTime: cycleTime,
+				ComponentName: keytranslation.Get(qCom.Name), UnitProduced: unitProduced, CycleTime: cycleTime,
 				UnitProfit: unitProfit,
 			})
 			totalProfit += unitProfit * float64(unitProduced)
@@ -119,7 +120,9 @@ func solveRequest(constraint models.Constraint, componentsRequest []dto.Componen
 		batches = append(batches, batch)
 		currentTime += minDuration
 	}
-
+	for i, _ := range componentsRequest {
+		componentsRequest[i].Name = keytranslation.Get(componentsRequest[i].Name)
+	}
 	return dto.ResponsePayload{
 		ComponentsLeft: componentsRequest,
 		TotalProfit:    totalProfit,

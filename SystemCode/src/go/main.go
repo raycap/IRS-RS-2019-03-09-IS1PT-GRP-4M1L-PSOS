@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"./endpoints"
+	keytranslation "./key_translation"
 )
 
 type GaParams struct {
@@ -16,6 +17,7 @@ type GaParams struct {
 }
 
 func main() {
+	keytranslation.LoadKeyTranslations()
 	http.HandleFunc("/testGaParam", endpoints.TestGaParam)
 
 	http.HandleFunc("/solve", endpoints.Solve)
