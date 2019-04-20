@@ -35,35 +35,21 @@ For our project, we designed a production scheduling system to optimize the job 
 
 Requirements:
 * nodejs and npm should be installed. Otherwise please download and install from the following website: https://www.npmjs.com/get-npm
-* Python 2.7 ~ Python 3.6.5 should be installed. Otherwise, please download and install from the following website: https://www.python.org/downloads/ 
-[*It is recommended to use the python version mentioned above since durable_rules might not be working properly for other python version]
+* To run the backend system, you can just run the binary file (src/go/main.exe). But it is also recommended to always install Golang version 1.12.4 or later. Please follow the installation in https://golang.org/dl/
 
 Installation:
-- [Anaconda](https://repo.anaconda.com/archive/Anaconda3-2018.12-Windows-x86_64.exe "Anaconda") / [Python 3.6](https://www.python.org/downloads/release/python-365/ "Python 3.6") or older
 - [Node.js ](https://nodejs.org/en/ "Node.js ")
-- Microsoft Visual C++ 14.0: [Build Tools for Visual Studio 2017](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=15 "Build Tools for Visual Studio 2017")  
-
+- [Optional] [Golang](https://golang.org/dl/ "Golang")
 ``` bash
-# 1. install all front end dependencies
-cd web/
+# 1. install all front end dependenciess
+cd SystemCode/company-order-form
+npm i react-scripts
 npm install
 
-# 2. install all backend dependencies
-pip install requests flask flask_cors durable_rules
-
-# 3. (Windows only) run start.bat to start all application 
-./start.bat
-# 3. (Non windows) you need to run redis server manually, and then run the rules engine by running cc_system.py inside rules-engine folder 
-python cc_system.py
-
-
-# 4. Try access localhost:8080/home 
-
-
-# Alternatively you just need to run rules engine by running python script and redis
-start_server.bat
-# And then access the frontend from AWS host. This static host will connect to your localhost rules engine backend
-http://machine-reasoning.s3-website-ap-southeast-1.amazonaws.com/home
+# 2. Run both web app and backend system
+start_server.sh # to start backend system
+web_app.sh # to start web app
+start.sh # to run both start_server.sh and web_app.sh
 
 ```
 
@@ -77,15 +63,6 @@ User Guide
 ---
 ## SECTION 7 : MISCELLANEOUS
 
-### [Credit card selection survey-2.csv](https://github.com/raycap/IRS-MR-2019-01-19-IS1PT-GRP-4M1L-CCRS/blob/master/Miscellaneous/Credit%20card%20selection%20survey-2.csv)
-* Results of survey
-* Insights derived, which were subsequently used in our system
-### 
-
-### [Credit Card Database.csv](https://github.com/raycap/IRS-MR-2019-01-19-IS1PT-GRP-4M1L-CCRS/blob/master/Miscellaneous/Credit%20Card%20Database.xlsx)
-* Selection criterias for credit cards, which were collated from various banks.
-* Served as the basis to calculate for the eligible cashflow amount
-### 
 
 ---
 
