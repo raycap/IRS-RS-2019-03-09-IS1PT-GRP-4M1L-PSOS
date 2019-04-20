@@ -19,16 +19,16 @@ For our project, we designed a production scheduling system to optimize the job 
 
 | Official Full Name  | Student ID (MTech Applicable)  | Work Items (Who Did What) | Email (Optional) |
 | :------------ |:---------------:| :-----| :-----|
-| Chen Liwei | A0101217B | Video Editing Data Collection Knowledge Modelling| e0384319@u.nus.edu |
-| Lee Boon Kien | A0195175W | Video Presentation Data Collection Knowledge Modelling| e0384806@u.nus.edu |
-| Ng Cheong Hong| A0195290Y| Knowledge Modelling Rules Engine Programming | e0384921@u.nus.edu |
-| Raymond Djajalaksana| A0195381X | Report Writing Front End Programming | e0385012@u.nus.edu |
-| Seah Jun Ru| A0097451Y | Data Collection Report Writing Knowledge Modelling| e0258166@u.nus.edu |
+| Chen Liwei | A0101217B | Video Presentation Report Writing Programming (Front End) | e0384319@u.nus.edu |
+| Lee Boon Kien | A0195175W | Video Presentation Report Writing | e0384806@u.nus.edu |
+| Ng Cheong Hong| A0195290Y| Knowledge Modelling Report Writing | e0384921@u.nus.edu |
+| Raymond Djajalaksana| A0195381X | Knowledge Modelling Programming (Backend) | e0385012@u.nus.edu |
+| Seah Jun Ru| A0097451Y | Knowledge Modelling Report Writing | e0258166@u.nus.edu |
 
 ---
 ## SECTION 4 : VIDEO OF SYSTEM MODELLING & USE CASE DEMO
 
-[![Credit Card Recommendation System](http://img.youtube.com/vi/kF0tPmweUeU/0.jpg)](http://www.youtube.com/watch?v=kF0tPmweUeU)
+[![Production Scheduling Optimization System](http://img.youtube.com/vi/kF0tPmweUeU/0.jpg)](http://www.youtube.com/watch?v=kF0tPmweUeU)
 
 ---
 ## SECTION 5 : USER GUIDE
@@ -54,19 +54,14 @@ start.sh # to run both start_server.sh and web_app.sh
 ```
 
 User Guide
-`4M1L_User_Guide_CCRS.pdf` : <https://github.com/raycap/IRS-MR-2019-01-19-IS1PT-GRP-4M1L-CCRS/blob/master/UserGuide/4M1L_User_Guide_CCRS.pdf>
+`4M1L_User_Guide_PSOS.pdf` : <https://github.com/raycap/IRS-RS-2019-01-19-IS1PT-GRP-4M1L-Manufacturing/blob/master/UserGuide/4M1L_User_Guide_PSOS.pdf>
 
 ---
 ## SECTION 6 : PROJECT REPORT / PAPER
-`4M1L_CreditCardRecommendationReport.pdf` : <https://github.com/raycap/IRS-MR-2019-01-19-IS1PT-GRP-4M1L-CCRS/blob/master/ProjectReport/4M1L_CreditCardRecommendationReport.pdf>
-
----
-## SECTION 7 : MISCELLANEOUS
+`4M1L_ProductionSchedulingOptimizationSystemReport.pdf` : <https://github.com/raycap/IRS-RS-2019-01-19-IS1PT-GRP-4M1L-Manufacturing/blob/master/ProjectReport/4M1L_ProductionSchedulingOptimizationSystemReport.pdf>
 
 
 ---
-
-
 
 ---
 
