@@ -19,16 +19,16 @@ For our project, we designed a production scheduling system to optimize the job 
 
 | Official Full Name  | Student ID (MTech Applicable)  | Work Items (Who Did What) | Email (Optional) |
 | :------------ |:---------------:| :-----| :-----|
-| Chen Liwei | A0101217B | Video Presentation Report Writing Programming (Front End) | e0384319@u.nus.edu |
+| Chen Liwei | A0101217B | Video Editing Report Writing Programming (Front End) | e0384319@u.nus.edu |
 | Lee Boon Kien | A0195175W | Video Presentation Report Writing | e0384806@u.nus.edu |
 | Ng Cheong Hong| A0195290Y| Knowledge Modelling Report Writing | e0384921@u.nus.edu |
 | Raymond Djajalaksana| A0195381X | Knowledge Modelling Programming (Backend) | e0385012@u.nus.edu |
-| Seah Jun Ru| A0097451Y | Knowledge Modelling Report Writing | e0258166@u.nus.edu |
+| Seah Jun Ru| A0097451Y | Video Actor Report Writing Programming (Front End) | e0258166@u.nus.edu |
 
 ---
 ## SECTION 4 : VIDEO OF SYSTEM MODELLING & USE CASE DEMO
 
-[![Production Scheduling Optimization System](http://img.youtube.com/vi/kF0tPmweUeU/0.jpg)](http://www.youtube.com/watch?v=kF0tPmweUeU)
+[![Production Scheduling Optimization System](http://img.youtube.com/vi/KcwQcBxI_vM/0.jpg)](https://youtu.be/KcwQcBxI_vM)
 
 ---
 ## SECTION 5 : USER GUIDE
