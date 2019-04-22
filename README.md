@@ -54,11 +54,11 @@ start.sh # to run both start_server.sh and web_app.sh
 ```
 
 User Guide
-`4M1L_User_Guide_PSOS.pdf` : <https://github.com/raycap/IRS-RS-2019-03-19-IS1PT-GRP-4M1L-PSOS/blob/master/UserGuide/4M1L_User_Guide_PSOS.pdf>
+`4M1L_User_Guide_PSOS.pdf` : <https://github.com/raycap/IRS-RS-2019-03-09-IS1PT-GRP-4M1L-PSOS/blob/master/UserGuide/4M1L_User_Guide_PSOS.pdf>
 
 ---
 ## SECTION 6 : PROJECT REPORT / PAPER
-`4M1L_ProductionSchedulingOptimizationSystemReport.pdf` : <https://github.com/raycap/IRS-RS-2019-03-19-IS1PT-GRP-4M1L-PSOS/blob/master/ProjectReport/4M1L_ProductionSchedulingOptimizationSystemReport.pdf>
+`4M1L_ProductionSchedulingOptimizationSystemReport.pdf` : <https://github.com/raycap/IRS-RS-2019-03-09-IS1PT-GRP-4M1L-PSOS/blob/master/ProjectReport/4M1L_ProductionSchedulingOptimizationSystemReport.pdf>
 
 
 ---
